@@ -18,9 +18,8 @@
 // Paths
 static const char *pathThunderboltNHI[]        { "/System/Library/Extensions/AppleThunderboltNHI.kext/Contents/MacOS/AppleThunderboltNHI" };
 
-static KernelPatcher::KextInfo kextThunderbolt[] {
-    { "com.apple.driver.AppleThunderboltNHI", pathThunderboltNHI, 1, {true}, {}, KernelPatcher::KextInfo::Unloaded }
-};
+static KernelPatcher::KextInfo kextThunderbolt =
+    { "com.apple.driver.AppleThunderboltNHI", pathThunderboltNHI, 1, {true}, {}, KernelPatcher::KextInfo::Unloaded };
 
 typedef void (*HALRegisterWrite32_t)(IOService *that, uint32_t offset, uint32_t data);
 typedef uint32_t (*HALRegisterRead32_t)(IOService *that, uint32_t offset);
@@ -61,7 +60,7 @@ static void patchThunderboltNHI(KernelPatcher& patcher, size_t index, mach_vm_ad
     KernelPatcher::RouteRequest requests[] {
         KernelPatcher::RouteRequest("__ZN19AppleThunderboltNHI8resetNHIEv", PatchedResetHNI, OriginalResetNHI),
     };
-    patcher.routeMultiple(KernelPatcher::KernelID, requests);
+    patcher.routeMultiple(index, requests, 1, address, size);
     if (patcher.getError() != KernelPatcher::Error::NoError) {
         SYSLOG(MODULE_SHORT, "failed to patch AppleThunderboltNHI::resetNHI");
         patcher.clearError();
@@ -71,10 +70,12 @@ static void patchThunderboltNHI(KernelPatcher& patcher, size_t index, mach_vm_ad
 // main function
 static void pluginStart() {
     DBGLOG(MODULE_SHORT, "start");
-    auto error = lilu.onKextLoad(kextThunderbolt, 1,
+    auto error = lilu.onKextLoad(&kextThunderbolt, 1,
     [](void* user, KernelPatcher& patcher, size_t index, mach_vm_address_t address, size_t size) {
-        DBGLOG(MODULE_SHORT, "found AppleThunderboltNHI");
-        patchThunderboltNHI(patcher, index, address, size);
+        if (index == kextThunderbolt.loadIndex) {
+            DBGLOG(MODULE_SHORT, "found AppleThunderboltNHI");
+            patchThunderboltNHI(patcher, index, address, size);
+        }
     }, nullptr);
     
     if (error != LiluAPI::Error::NoError)
@@ -105,7 +106,7 @@ PluginConfiguration ADDPR(config) {
     arrsize(bootargDebug),
     bootargBeta,
     arrsize(bootargBeta),
-    KernelVersion::Mojave,
+    KernelVersion::HighSierra,
     KernelVersion::Catalina,
     pluginStart
 };
