@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE0D113D2377FA5F003BE3C3 /* ThunderboltWait.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0D113B2377FA5F003BE3C3 /* ThunderboltWait.cpp */; };
+		CE0D113E2377FA5F003BE3C3 /* ThunderboltWait.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CE0D113C2377FA5F003BE3C3 /* ThunderboltWait.hpp */; };
 		CEDE8D7B22984F8F00C73034 /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDE8D6E22984F7700C73034 /* libkmod.a */; };
 		CEDE8D7C22984FE600C73034 /* plugin_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEDE8D7822984F7700C73034 /* plugin_start.cpp */; };
 		CEDE8D7E2298501600C73034 /* kern_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEDE8D7D2298501600C73034 /* kern_start.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE0D113B2377FA5F003BE3C3 /* ThunderboltWait.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ThunderboltWait.cpp; sourceTree = "<group>"; };
+		CE0D113C2377FA5F003BE3C3 /* ThunderboltWait.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ThunderboltWait.hpp; sourceTree = "<group>"; };
 		CEDE8CE522984C0800C73034 /* ThunderboltReset.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThunderboltReset.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEDE8CEC22984C0800C73034 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEDE8D4D22984F7600C73034 /* kern_config.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_config.hpp; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 			children = (
 				CEDE8CEC22984C0800C73034 /* Info.plist */,
 				CEDE8D7D2298501600C73034 /* kern_start.cpp */,
+				CE0D113B2377FA5F003BE3C3 /* ThunderboltWait.cpp */,
+				CE0D113C2377FA5F003BE3C3 /* ThunderboltWait.hpp */,
 			);
 			path = ThunderboltReset;
 			sourceTree = "<group>";
@@ -194,6 +200,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0D113E2377FA5F003BE3C3 /* ThunderboltWait.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEDE8D7C22984FE600C73034 /* plugin_start.cpp in Sources */,
+				CE0D113D2377FA5F003BE3C3 /* ThunderboltWait.cpp in Sources */,
 				CEDE8D7E2298501600C73034 /* kern_start.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

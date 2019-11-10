@@ -29,6 +29,8 @@ static HALRegisterWrite32_t HALRegisterWrite32 = NULL;
 static HALRegisterRead32_t HALRegisterRead32 = NULL;
 static mach_vm_address_t OriginalResetNHI = 0;
 
+volatile bool gIsReady = false;
+
 static int PatchedResetHNI(IOService *that) {
     DBGLOG(MODULE_SHORT, "AppleThunderboltNHI::resetNHI called");
     
@@ -37,7 +39,7 @@ static int PatchedResetHNI(IOService *that) {
     DBGLOG(MODULE_SHORT, "AppleThunderboltNHI::resetNHI: REG_FW_STS = 0x%08X", reg);
     reg |= REG_FW_STS_ICM_EN_INVERT;
     HALRegisterWrite32(hal, REG_FW_STS, reg);
-    IOSleep(1000);
+    IODelay(1000000);
     
     return reinterpret_cast<ResetNHI_t>(OriginalResetNHI)(that);
 }
@@ -47,6 +49,7 @@ static void patchThunderboltNHI(KernelPatcher& patcher, size_t index, mach_vm_ad
     if (!HALRegisterWrite32) {
         SYSLOG(MODULE_SHORT, "failed to find AppleThunderboltGenericHAL::registerWrite32");
         patcher.clearError();
+        gIsReady = true;
         return;
     }
     
@@ -54,6 +57,7 @@ static void patchThunderboltNHI(KernelPatcher& patcher, size_t index, mach_vm_ad
     if (!HALRegisterRead32) {
         SYSLOG(MODULE_SHORT, "failed to find AppleThunderboltGenericHAL::registerRead32");
         patcher.clearError();
+        gIsReady = true;
         return;
     }
     
@@ -62,9 +66,10 @@ static void patchThunderboltNHI(KernelPatcher& patcher, size_t index, mach_vm_ad
     };
     patcher.routeMultiple(index, requests, 1, address, size);
     if (patcher.getError() != KernelPatcher::Error::NoError) {
-        SYSLOG(MODULE_SHORT, "failed to patch AppleThunderboltNHI::resetNHI");
+        SYSLOG(MODULE_SHORT, "failed to patch AppleThunderboltNHI::resetNHI, error %d", patcher.getError());
         patcher.clearError();
     }
+    gIsReady = true;
 }
 
 // main function
@@ -81,6 +86,7 @@ static void pluginStart() {
     if (error != LiluAPI::Error::NoError)
     {
         SYSLOG(MODULE_SHORT, "failed to register onPatcherLoad method %d", error);
+        gIsReady = true;
     }
 }
 
