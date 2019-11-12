@@ -18,6 +18,7 @@
         External (MMTB, MethodObj)                        // Memory mapped TB port
         External (TBSE, FieldUnitObj)                     // TB root port number
         External (\_SB.PCI0.GPCB, MethodObj)              // get PCI MMIO base
+        External (\_SB.PCI0.RP05.PXSX, DeviceObj)         // Replace the old device
 
         /**
          * Implement a call to the original HP handler
@@ -39,5 +40,16 @@
             Local0 += (Arg1 << 15)
             Local0 += (Arg2 << 12)
             Return (Local0)
+        }
+
+        /**
+         * PXSX replaced by UPSB
+         */
+        Scope (PXSX)
+        {
+            Method (_STA, 0, NotSerialized)
+            {
+                Return (Zero) // hidden
+            }
         }
     }
