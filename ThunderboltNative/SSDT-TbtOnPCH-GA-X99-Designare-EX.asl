@@ -19,6 +19,8 @@
     External (\_SB.PCI0.BR3A.PMEP, FieldUnitObj)
     External (\_SB.PCI0.BR3A.PMEH, MethodObj)
     External (\_SB.PCI0.BR3A.HPEH, MethodObj)
+    External (\_GPE.MMRP, MethodObj)
+    External (\_GPE.MMTB, MethodObj)
     External (\PEMA, IntObj)
     External (\TBRP, IntObj)
     Scope (TBT_ROOT)
@@ -72,19 +74,19 @@
          * Implement a call that returns the MMIO address
          * for the root port in Arg0
          */
-        //Method (MMRP, 1, Serialized)
-        //{
-        //}
-        External (MMRP, MethodObj)
+        Method (MMRP, 1, Serialized)
+        {
+            Return (\_GPE.MMRP (Arg0))
+        }
 
         /**
          * Implement a call that returns the MMIO address
          * for the upstream port in Arg0
          */
-        //Method (MMTB, 1, Serialized)
-        //{
-        //}
-        External (MMTB, MethodObj)
+        Method (MMTB, 1, Serialized)
+        {
+            Return (\_GPE.MMTB (Arg0))
+        }
 
         /**
          * This is passed to MMRP and MMTB as Arg0
