@@ -4,10 +4,13 @@
  * Copyright (c) 2019 osy86
  */
 
-#define TBT_HAS_COMPANION Zero
+#ifndef TBT_HOTPLUG_GPE
 #define TBT_HOTPLUG_GPE _L01
+#endif
+#ifndef TBT_ROOT
 #define TBT_ROOT \_SB.PCI0.BR3A.H000
-#define XHC_ROOT \_SB.PCI0.XHC
+#endif
+#define TBT_HAS_COMPANION Zero
 #define TBT_USB_PORT_1_COMPANION Zero
 #define TBT_USB_PORT_2_COMPANION Zero
 

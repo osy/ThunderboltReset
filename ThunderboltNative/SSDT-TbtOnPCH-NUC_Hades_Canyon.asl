@@ -12,6 +12,7 @@
 #define TBT_USB_PORT_2_COMPANION 0x0D
 
     External (TBT_ROOT, DeviceObj)
+    External (XHC_ROOT, DeviceObj)
     Scope (TBT_ROOT)
     {
         External (MMRP, MethodObj)                        // Memory mapped root port

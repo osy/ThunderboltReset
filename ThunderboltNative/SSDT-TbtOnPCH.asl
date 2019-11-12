@@ -7,7 +7,10 @@
  * 
  * Copyright (c) 2019 osy86
  */
-DefinitionBlock ("", "SSDT", 2, "OSY86 ", "TbtOnPCH", 0x00001000)
+#ifndef SSDT_NAME
+#define SSDT_NAME "TbtOnPCH"
+#endif
+DefinitionBlock ("", "SSDT", 2, "OSY86 ", SSDT_NAME, 0x00001000)
 {
 #ifndef TARGET
 #error "Must define TARGET"
@@ -22,8 +25,6 @@ DefinitionBlock ("", "SSDT", 2, "OSY86 ", "TbtOnPCH", 0x00001000)
     External (\RMDT.P1, MethodObj)                    // Debug printing
     External (\RMDT.P2, MethodObj)                    // Debug printing
     External (\RMDT.P3, MethodObj)                    // Debug printing
-    External (TBT_ROOT, DeviceObj)
-    External (XHC_ROOT, DeviceObj)
 
     Scope (\_GPE)
     {
@@ -34,6 +35,7 @@ DefinitionBlock ("", "SSDT", 2, "OSY86 ", "TbtOnPCH", 0x00001000)
             {
                 Return
             }
+#ifndef NO_WINDOWS_SUPPORT
             If (!OSDW ())
             {
                 If (TBT_ROOT.POC0 == One)
@@ -69,12 +71,14 @@ DefinitionBlock ("", "SSDT", 2, "OSY86 ", "TbtOnPCH", 0x00001000)
             {
                 \_SB.SGII (0x01070015, One)
             }
+            */
             Else
             {
                 TBT_ROOT.UPSB.AMPE ()
             }
-            */
+#else // NO_WINDOWS_SUPPORT
             TBT_ROOT.UPSB.AMPE ()
+#endif
             TBT_ROOT.DBG1 ("End hotplug handler")
         }
     }
@@ -110,7 +114,9 @@ DefinitionBlock ("", "SSDT", 2, "OSY86 ", "TbtOnPCH", 0x00001000)
             }
         }
 
+#ifndef NO_WINDOWS_SUPPORT
 #include "SSDT-TbtOnPCH-Boot.asl"
+#endif
 
         Name (IIP3, Zero)
         Name (PRSR, Zero)
@@ -718,10 +724,9 @@ DefinitionBlock ("", "SSDT", 2, "OSY86 ", "TbtOnPCH", 0x00001000)
             Method (UMPE, 0, Serialized)
             {
                 Notify (TBT_ROOT.UPSB.DSB2.XHC2, Zero) // Bus Check
-                If (TBT_HAS_COMPANION)
-                {
-                    Notify (XHC_ROOT, Zero) // Bus Check
-                }
+#ifdef XHC_ROOT
+                Notify (XHC_ROOT, Zero) // Bus Check
+#endif
             }
 
             Name (MDUV, One) // plug status
@@ -758,6 +763,7 @@ DefinitionBlock ("", "SSDT", 2, "OSY86 ", "TbtOnPCH", 0x00001000)
 
             Method (_PS3, 0, Serialized)  // _PS3: Power State 3
             {
+#ifndef NO_WINDOWS_SUPPORT
                 If (!OSDW ())
                 {
                     If (TBT_ROOT.UPCK () == Zero)
@@ -767,6 +773,7 @@ DefinitionBlock ("", "SSDT", 2, "OSY86 ", "TbtOnPCH", 0x00001000)
 
                     TBT_ROOT.TBTC (0x05)
                 }
+#endif
             }
 
             OperationRegion (H548, PCI_Config, 0x0548, 0x20)
