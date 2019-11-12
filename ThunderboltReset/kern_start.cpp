@@ -37,9 +37,13 @@ static int PatchedResetHNI(IOService *that) {
     IOService *hal = that->getProvider();
     uint32_t reg = HALRegisterRead32(hal, REG_FW_STS);
     DBGLOG(MODULE_SHORT, "AppleThunderboltNHI::resetNHI: REG_FW_STS = 0x%08X", reg);
-    reg |= REG_FW_STS_ICM_EN_INVERT;
-    HALRegisterWrite32(hal, REG_FW_STS, reg);
-    IODelay(1000000);
+    if (!(reg & REG_FW_STS_ICM_EN)) {
+        reg |= REG_FW_STS_ICM_EN_INVERT;
+        HALRegisterWrite32(hal, REG_FW_STS, reg);
+        IODelay(1000000);
+    } else {
+        DBGLOG(MODULE_SHORT, "AppleThunderboltNHI::resetNHI: ARC already disabled, bypassing", reg);
+    }
     
     return reinterpret_cast<ResetNHI_t>(OriginalResetNHI)(that);
 }
