@@ -1,5 +1,5 @@
 IASL=iasl
-TARGET?=NUC_Hades_Canyon
+TARGET?=NUC-Hades-Canyon
 
 DEFINES=-DTARGET=$(TARGET)
 ifneq ($(SSDT_NAME),)

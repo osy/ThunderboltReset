@@ -1,5 +1,5 @@
 /**
- * Support file for GC Alpine Ridge card
+ * Support file for GA-X99-Designare EX
  * 
  * Copyright (c) 2019 osy86
  */
