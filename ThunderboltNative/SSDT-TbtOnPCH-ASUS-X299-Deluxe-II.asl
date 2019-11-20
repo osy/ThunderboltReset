@@ -4,7 +4,7 @@
  * Copyright (c) 2019 osy86
  */
 
-#define TBT_HAS_COMPANION 0
+#define TBT_HAS_COMPANION One
 #define TBT_HOTPLUG_GPE _L61
 #define TBT_ROOT \_SB.PCI0.RP05
 #define XHC_ROOT \_SB.PCI0.XHC
