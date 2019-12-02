@@ -756,8 +756,13 @@ DefinitionBlock ("", "SSDT", 2, "OSY86 ", SSDT_NAME, 0x00001000)
                 {
                     PCED () // enable downlink
                     // some magical commands to CIO
+#ifdef THUNDERBOLT_TITAN_RIDGE
+                    TBT_ROOT.UPSB.CRMW (0x0150, Zero, 0x02, 0x04000000, 0x04000000)
+                    TBT_ROOT.UPSB.CRMW (0x0250, Zero, 0x02, 0x04000000, 0x04000000)
+#else
                     TBT_ROOT.UPSB.CRMW (0x013E, Zero, 0x02, 0x0200, 0x0200)
                     TBT_ROOT.UPSB.CRMW (0x023E, Zero, 0x02, 0x0200, 0x0200)
+#endif
                 }
             }
 
