@@ -9,3 +9,8 @@ subsequently disabled (by this plugin). Therefore, this should only be used
 for testing.
 
 Lilu is required for this to work.
+
+## Guides
+
+[Patching Ridge NVM](PatchingNVM.md)
+[Patching ACPI](PatchingACPI.md)
