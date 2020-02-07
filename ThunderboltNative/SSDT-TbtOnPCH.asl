@@ -2,7 +2,7 @@
  * Thunderbolt For Alpine Ridge
  * Large parts (link training and enumeration) 
  * taken from decompiled Mac AML.
- * Note: USB/CIO RTD3 power management largly 
+ * Note: USB/CIO RTD3 power management largely 
  * missing due to lack of GPIO pins.
  * 
  * Copyright (c) 2019 osy86
